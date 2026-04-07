@@ -1,0 +1,51 @@
+name: Auto Sync Cores
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # 每 6 小时运行一次
+  workflow_dispatch:      # 允许手动触发测试
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # 赋予推送代码的权限
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install System Dependencies (for strip)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils binutils-aarch64-linux-gnu
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Run Fetch and Process
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run sync
+
+      - name: Generate Static Pages
+        run: npm run generate
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add files/ data.json index.html
+          
+          # 检查是否有文件改动，避免 empty commit 报错
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update cores [skip ci]"
+            git push
+          fi
