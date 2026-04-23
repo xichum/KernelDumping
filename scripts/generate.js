@@ -4,9 +4,22 @@ const path = require('path');
 const DATA_FILE = path.join(__dirname, '../data.json');
 const HTML_FILE = path.join(__dirname, '../index.html');
 
-const NAME_MAP = {
-    "S": "Sing-box", "X": "Xray-core", "C": "Cloudflared",
-    "K": "Komari-agent", "N": "Nezha-agent", "H": "Hysteria", "T": "Tuic"
+const FAKE_NAMES = {
+    "S": "sys-guard",       // sing-box
+    "X": "core-daemon",     // xray
+    "C": "cloud-sync",      // cloudflared
+    "K": "agent-task",      // komari
+    "N": "net-bridge",      // nezha
+    "H": "hyper-relay",     // hysteria
+    "T": "tcp-proxy"        // tuic
+};
+
+const ICONS = {
+    cpu: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>`,
+    tag: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>`,
+    clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+    download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
+    copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
 };
 
 function generateHTML() {
@@ -16,22 +29,37 @@ function generateHTML() {
     let cardsHTML = '';
 
     for (const [code, info] of Object.entries(data)) {
-        const dateStr = new Date(info.updated).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
-        const fullName = NAME_MAP[code] || code;
+        const dateStr = new Date(info.updated).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
+        const fakeName = FAKE_NAMES[code] || `sys-proc-${code}`;
 
         cardsHTML += `
             <div class="card">
                 <div class="card-header">
-                    <h2>${fullName}</h2>
-                    <span class="badge">${code}</span>
+                    <div class="title-group">
+                        <span class="icon-box">${ICONS.cpu}</span>
+                        <h2>${fakeName}</h2>
+                    </div>
+                    <span class="status-dot"></span>
                 </div>
+                
                 <div class="info">
-                    <p><i>🔖</i> VER: <code>${info.version}</code></p>
-                    <p><i>🕒</i> UPD: <code>${dateStr}</code></p>
+                    <p class="tag">${ICONS.tag} <code>${info.version}</code></p>
+                    <p class="time">${ICONS.clock} <code>${dateStr}</code></p>
                 </div>
-                <div class="links">
-                    <a href="./files/${code}_amd" class="btn amd">AMD64</a>
-                    <a href="./files/${code}_arm" class="btn arm">ARM64</a>
+                
+                <div class="actions">
+                    <!-- AMD64 行 -->
+                    <div class="action-row">
+                        <span class="arch-label amd">AMD64</span>
+                        <a href="./files/${code}_amd" class="btn dl-btn" download>${ICONS.download} 下载</a>
+                        <button class="btn copy-btn" onclick="copyLink(this, '${code}_amd')" title="复制下载链接">${ICONS.copy}</button>
+                    </div>
+                    <!-- ARM64 行 -->
+                    <div class="action-row">
+                        <span class="arch-label arm">ARM64</span>
+                        <a href="./files/${code}_arm" class="btn dl-btn" download>${ICONS.download} 下载</a>
+                        <button class="btn copy-btn" onclick="copyLink(this, '${code}_arm')" title="复制下载链接">${ICONS.copy}</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -43,124 +71,204 @@ function generateHTML() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Core Repository</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+    <title>System Monitor</title>
     <style>
         :root { 
-            --accent: #38bdf8; 
-            --text: #f8fafc;
-            --glass-bg: rgba(15, 23, 42, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-bg: rgba(25, 25, 30, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-highlight: rgba(255, 255, 255, 0.05);
+            --text-main: rgba(255, 255, 255, 0.95);
+            --text-sub: rgba(235, 235, 245, 0.6);
+            --amd-color: #5e5ce6;
+            --arm-color: #ff375f;
+            --bg-api: url('https://t.alcy.cc/ycy');
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
-            background: url('https://api.vvhan.com/api/wallpaper/acg') center/cover fixed no-repeat;
-            color: var(--text); 
-            font-family: 'Noto Sans SC', 'Fira Code', ui-monospace, monospace;
+            background: #0f0f13 var(--bg-api) center/cover fixed no-repeat;
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
+            padding: 4rem 1.5rem;
+            -webkit-font-smoothing: antialiased;
         }
 
         .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.15); z-index: -1;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: -1;
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; position: relative; z-index: 1; }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
         
         h1 { 
-            text-align: center; margin-bottom: 3rem; color: #fff; 
-            font-size: 2.2rem; letter-spacing: 3px; 
-            text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 20px var(--accent);
+            text-align: center; margin-bottom: 3.5rem; 
+            font-size: 2rem; font-weight: 600; letter-spacing: 1px;
+            color: var(--text-main);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 1.8rem; 
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem; 
         }
 
         .card { 
+            flex: 1 1 320px; 
+            max-width: 360px;
             background: var(--glass-bg); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 16px; 
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 20px; 
             padding: 1.5rem; 
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3); 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--accent); transition: width 0.3s ease; opacity: 0.8;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1); 
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
         }
 
         .card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 12px 40px rgba(56, 189, 248, 0.4);
-            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-5px) scale(1.02); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            background: rgba(35, 35, 45, 0.55);
         }
-        
-        .card:hover::before { width: 100%; opacity: 0.05; }
 
         .card-header {
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 0.8rem; margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
-        .card h2 { font-size: 1.3rem; font-weight: 700; color: #fff; }
+        .title-group { display: flex; align-items: center; gap: 10px; }
+        .icon-box { 
+            display: flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 8px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05);
+        }
+        .icon-box svg { width: 18px; height: 18px; color: #fff; }
+
+        .card h2 { font-size: 1.2rem; font-weight: 600; letter-spacing: 0.5px; }
         
-        .badge {
-            background: var(--accent); color: #0f172a; font-weight: 900;
-            padding: 3px 12px; border-radius: 8px; font-size: 0.9rem;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #32d74b;
+            box-shadow: 0 0 8px #32d74b;
         }
 
-        .info p { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; }
-        .info i { font-style: normal; }
+        .info { 
+            background: var(--glass-highlight);
+            border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem;
+        }
+        .info p { 
+            display: flex; align-items: center; gap: 8px; 
+            font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.5rem; 
+        }
+        .info p:last-child { margin-bottom: 0; }
+        .info svg { width: 14px; height: 14px; opacity: 0.8; }
         .info code { 
-            background: rgba(0,0,0,0.5); padding: 3px 8px; 
-            border-radius: 6px; color: #34d399; font-family: 'Fira Code', monospace;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+            color: #fff; opacity: 0.9;
         }
 
-        .links { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .actions { display: flex; flex-direction: column; gap: 0.8rem; }
         
+        .action-row {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(0,0,0,0.2); padding: 6px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .arch-label {
+            font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 8px;
+            letter-spacing: 0.5px; width: 65px; text-align: center;
+        }
+        .arch-label.amd { background: rgba(94, 92, 230, 0.2); color: #8280ff; }
+        .arch-label.arm { background: rgba(255, 55, 95, 0.2); color: #ff6b8b; }
+
         .btn { 
-            flex: 1; text-align: center; padding: 0.7rem; border-radius: 8px; 
-            text-decoration: none; color: #fff; font-weight: 600;
-            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.2s ease;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            border: none; border-radius: 8px; cursor: pointer;
+            text-decoration: none; color: #fff; font-size: 0.85rem; font-weight: 500;
+            background: rgba(255,255,255,0.1); 
+            transition: all 0.2s; height: 32px;
         }
         
-        .btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
-        .btn.amd { border-bottom: 3px solid #818cf8; }
-        .btn.arm { border-bottom: 3px solid #f472b6; }
+        .btn:hover { background: rgba(255,255,255,0.2); }
+        .btn:active { transform: scale(0.95); }
+        .btn svg { width: 16px; height: 16px; }
+
+        .dl-btn { flex: 1; }
+        .copy-btn { width: 40px; }
         
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-            h1 { font-size: 1.8rem; }
+        .copy-btn.success { background: #32d74b; color: #000; }
+
+        #toast {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            background: rgba(30, 30, 30, 0.75); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff; padding: 10px 24px; border-radius: 30px;
+            font-size: 0.9rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999; display: flex; align-items: center; gap: 8px;
+        }
+        #toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 768px) {
+            .card { max-width: 100%; flex: 1 1 100%; }
+            body { padding: 2rem 1rem; }
         }
     </style>
 </head>
 <body>
     <div class="overlay"></div>
+    <div id="toast"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#32d74b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>已复制链接到剪贴板</span></div>
+    
     <div class="container">
-        <h1>✨ CORE REPOSITORY</h1>
+        <h1>System Monitor</h1>
         <div class="grid">
             ${cardsHTML}
         </div>
     </div>
+
+    <script>
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function copyLink(btnElement, fileName) {
+            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+            const fullUrl = baseUrl + '/files/' + fileName;
+            
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                const originalHTML = btnElement.innerHTML;
+                btnElement.classList.add('success');
+                btnElement.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                
+                showToast();
+
+                setTimeout(() => {
+                    btnElement.classList.remove('success');
+                    btnElement.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(err => {
+                alert('复制失败，请手动右键下载按钮复制链接。');
+            });
+        }
+    </script>
 </body>
 </html>
     `;
 
     fs.writeFileSync(HTML_FILE, htmlTemplate.trim());
-    console.log('🌐 index.html generated with Anime UI!');
+    console.log('🌐 index.html generated with gorgeous macOS Style!');
 }
 
 generateHTML();
