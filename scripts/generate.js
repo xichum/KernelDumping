@@ -14,12 +14,13 @@ const FAKE_NAMES = {
     "T": "tcp-proxy"        // tuic
 };
 
+// Fixed SVG icons by adding xmlns attribute
 const ICONS = {
-    cpu: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>`,
-    tag: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>`,
-    clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
-    download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
-    copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
+    cpu: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>`,
+    tag: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>`,
+    clock: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+    download: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
+    copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
 };
 
 function generateHTML() {
@@ -29,7 +30,8 @@ function generateHTML() {
     let cardsHTML = '';
 
     for (const [code, info] of Object.entries(data)) {
-        const dateStr = new Date(info.updated).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
+        // Changed to English locale but kept Shanghai timezone 
+        const dateStr = new Date(info.updated).toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false });
         const fakeName = FAKE_NAMES[code] || `sys-proc-${code}`;
 
         cardsHTML += `
@@ -48,17 +50,15 @@ function generateHTML() {
                 </div>
                 
                 <div class="actions">
-                    <!-- AMD64 行 -->
                     <div class="action-row">
                         <span class="arch-label amd">AMD64</span>
-                        <a href="./files/${code}_amd" class="btn dl-btn" download>${ICONS.download} 下载</a>
-                        <button class="btn copy-btn" onclick="copyLink(this, '${code}_amd')" title="复制下载链接">${ICONS.copy}</button>
+                        <a href="./files/${code}_amd" class="btn dl-btn" download>${ICONS.download} Download</a>
+                        <button class="btn copy-btn" onclick="copyLink(this, '${code}_amd')" title="Copy Link">${ICONS.copy}</button>
                     </div>
-                    <!-- ARM64 行 -->
                     <div class="action-row">
                         <span class="arch-label arm">ARM64</span>
-                        <a href="./files/${code}_arm" class="btn dl-btn" download>${ICONS.download} 下载</a>
-                        <button class="btn copy-btn" onclick="copyLink(this, '${code}_arm')" title="复制下载链接">${ICONS.copy}</button>
+                        <a href="./files/${code}_arm" class="btn dl-btn" download>${ICONS.download} Download</a>
+                        <button class="btn copy-btn" onclick="copyLink(this, '${code}_arm')" title="Copy Link">${ICONS.copy}</button>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@ function generateHTML() {
 
     const htmlTemplate = `
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,7 +91,10 @@ function generateHTML() {
             color: var(--text-main); 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
-            padding: 4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Ensures content centers perfectly on one screen */
+            padding: 2rem 1.5rem;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -102,12 +105,13 @@ function generateHTML() {
         }
 
         .container { 
-            max-width: 1200px; 
+            max-width: 1400px; /* Increased width to fit 4 cards beautifully */
+            width: 100%;
             margin: 0 auto; 
         }
         
         h1 { 
-            text-align: center; margin-bottom: 3.5rem; 
+            text-align: center; margin-bottom: 2.5rem; 
             font-size: 2rem; font-weight: 600; letter-spacing: 1px;
             color: var(--text-main);
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
@@ -116,18 +120,18 @@ function generateHTML() {
         .grid { 
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: center; /* Creates the 4+3 staggered look */
             gap: 1.5rem; 
         }
 
         .card { 
-            flex: 1 1 320px; 
-            max-width: 360px;
+            flex: 1 1 300px; /* Base width */
+            max-width: 320px; /* Caps width so 4 fit in 1400px */
             background: var(--glass-bg); 
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border-radius: 20px; 
-            padding: 1.5rem; 
+            padding: 1.25rem; /* Slightly compact padding */
             border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1); 
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
@@ -141,7 +145,7 @@ function generateHTML() {
 
         .card-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
         }
 
         .title-group { display: flex; align-items: center; gap: 10px; }
@@ -152,7 +156,7 @@ function generateHTML() {
         }
         .icon-box svg { width: 18px; height: 18px; color: #fff; }
 
-        .card h2 { font-size: 1.2rem; font-weight: 600; letter-spacing: 0.5px; }
+        .card h2 { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
         
         .status-dot {
             width: 8px; height: 8px; border-radius: 50%;
@@ -162,7 +166,7 @@ function generateHTML() {
 
         .info { 
             background: var(--glass-highlight);
-            border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem;
+            border-radius: 12px; padding: 0.8rem; margin-bottom: 1.2rem;
         }
         .info p { 
             display: flex; align-items: center; gap: 8px; 
@@ -195,15 +199,15 @@ function generateHTML() {
             border: none; border-radius: 8px; cursor: pointer;
             text-decoration: none; color: #fff; font-size: 0.85rem; font-weight: 500;
             background: rgba(255,255,255,0.1); 
-            transition: all 0.2s; height: 32px;
+            transition: all 0.2s; height: 30px;
         }
         
         .btn:hover { background: rgba(255,255,255,0.2); }
         .btn:active { transform: scale(0.95); }
-        .btn svg { width: 16px; height: 16px; }
+        .btn svg { width: 15px; height: 15px; }
 
         .dl-btn { flex: 1; }
-        .copy-btn { width: 40px; }
+        .copy-btn { width: 38px; }
         
         .copy-btn.success { background: #32d74b; color: #000; }
 
@@ -219,15 +223,20 @@ function generateHTML() {
         }
         #toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
+        @media (max-width: 1024px) {
+            /* Falls back to smaller layout gracefully on smaller screens */
+            .card { flex: 1 1 250px; }
+        }
+        
         @media (max-width: 768px) {
             .card { max-width: 100%; flex: 1 1 100%; }
-            body { padding: 2rem 1rem; }
+            body { padding: 2rem 1rem; height: auto; display: block; }
         }
     </style>
 </head>
 <body>
     <div class="overlay"></div>
-    <div id="toast"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#32d74b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>已复制链接到剪贴板</span></div>
+    <div id="toast"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#32d74b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Link copied to clipboard!</span></div>
     
     <div class="container">
         <h1>System Monitor</h1>
@@ -250,7 +259,7 @@ function generateHTML() {
             navigator.clipboard.writeText(fullUrl).then(() => {
                 const originalHTML = btnElement.innerHTML;
                 btnElement.classList.add('success');
-                btnElement.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                btnElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
                 
                 showToast();
 
@@ -259,7 +268,7 @@ function generateHTML() {
                     btnElement.innerHTML = originalHTML;
                 }, 2000);
             }).catch(err => {
-                alert('复制失败，请手动右键下载按钮复制链接。');
+                alert('Failed to copy. Please manually right-click the Download button to copy the link.');
             });
         }
     </script>
