@@ -5,13 +5,13 @@ const DATA_FILE = path.join(__dirname, '../data.json');
 const HTML_FILE = path.join(__dirname, '../index.html');
 
 const FAKE_NAMES = {
-    "S": "sys-guard",       // sing-box
-    "X": "core-daemon",     // xray
-    "C": "cloud-sync",      // cloudflared
-    "K": "agent-task",      // komari
-    "N": "net-bridge",      // nezha
-    "H": "hyper-relay",     // hysteria
-    "T": "tcp-proxy"        // tuic
+    "S": "S-QV",       // sing-box
+    "X": "X-NR",     // xray
+    "C": "C-LM",      // cloudflared
+    "K": "K-DS",      // komari
+    "N": "N-OV",      // nezha
+    "H": "H-RT",     // hy2
+    "T": "T-QL"        // tuic
 };
 
 // Fixed SVG icons by adding xmlns attribute
