@@ -1,4 +1,3 @@
-```javascript
 const fs = require('fs');
 const path = require('path');
 const DATA_FILE = path.join(__dirname, '../data.json');
@@ -254,4 +253,3 @@ function generateHTML() {
     console.log('🌐 index.html generated with gorgeous macOS Style!');
 }
 generateHTML();
-```
