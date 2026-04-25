@@ -2,15 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const DATA_FILE = path.join(__dirname, '../data.json');
 const HTML_FILE = path.join(__dirname, '../index.html');
+
 const FAKE_NAMES = {
     "S": "S-QV",       // sing-box
-    "X": "X-NR",     // xray
-    "C": "C-LM",      // cloudflared
-    "K": "K-DS",      // komari
-    "N": "N-OV",      // nezha
-    "H": "H-RT",     // hy2
+    "X": "X-NR",       // xray
+    "C": "C-LM",       // cloudflared
+    "K": "K-DS",       // komari
+    "N": "N-OV",       // nezha
+    "H": "H-RT",       // hy2
     "T": "T-QL"        // tuic
 };
+
 const ICONS = {
     cpu: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>`,
     tag: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>`,
@@ -18,16 +20,19 @@ const ICONS = {
     download: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
     copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
 };
-const NEW_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3E%3C/path%3E%3Cpolyline points='22,4 12,14.01 9,11.01'%3E%3C/polyline%3E%3C/svg%3E"; // 新图标：一个简化的监控/系统图标
+
+const NEW_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3E%3C/path%3E%3Cpolyline points='22,4 12,14.01 9,11.01'%3E%3C/polyline%3E%3C/svg%3E"; 
+
 function generateHTML() {
     if (!fs.existsSync(DATA_FILE)) return;
     const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
     let cardsHTML = '';
+
     for (const [code, info] of Object.entries(data)) {
-        // Changed to English locale but kept Shanghai timezone
         const dateStr = new Date(info.updated).toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false });
         const fakeName = FAKE_NAMES[code] || `sys-proc-${code}`;
-        let actionsHTML = `
+        
+        const actionsHTML = `
             <div class="action-row">
                 <span class="arch-label amd">AMD64</span>
                 <a href="./files/${code}_amd" class="btn dl-btn" download>${ICONS.download} Download</a>
@@ -39,15 +44,7 @@ function generateHTML() {
                 <button class="btn copy-btn" onclick="copyLink(this, '${code}_arm')" title="Copy Link">${ICONS.copy}</button>
             </div>
         `;
-        if (code === 'T') {
-            actionsHTML = `
-                <div class="action-row">
-                    <span class="arch-label amd">x86_64</span>
-                    <a href="./files/T_amd64" class="btn dl-btn" download>${ICONS.download} Download</a>
-                    <button class="btn copy-btn" onclick="copyLink(this, 'T_amd64')" title="Copy Link">${ICONS.copy}</button>
-                </div>
-            `;
-        }
+        
         cardsHTML += `
             <div class="card">
                 <div class="card-header">
@@ -67,6 +64,7 @@ function generateHTML() {
             </div>
         `;
     }
+
     const htmlTemplate = `
 <!DOCTYPE html>
 <html lang="en">
@@ -94,7 +92,7 @@ function generateHTML() {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Ensures content centers perfectly on one screen */
+            justify-content: center;
             padding: 2rem 1.5rem;
             -webkit-font-smoothing: antialiased;
         }
@@ -104,7 +102,7 @@ function generateHTML() {
             z-index: -1;
         }
         .container {
-            max-width: 1400px; /* Increased width to fit 4 cards beautifully */
+            max-width: 1400px;
             width: 100%;
             margin: 0 auto;
         }
@@ -117,17 +115,17 @@ function generateHTML() {
         .grid {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center; /* Creates the 4+3 staggered look */
+            justify-content: center;
             gap: 1.5rem;
         }
         .card {
-            flex: 1 1 300px; /* Base width */
-            max-width: 320px; /* Caps width so 4 fit in 1400px */
+            flex: 1 1 300px;
+            max-width: 320px;
             background: var(--glass-bg);
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border-radius: 20px;
-            padding: 1.25rem; /* Slightly compact padding */
+            padding: 1.25rem;
             border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
@@ -205,7 +203,6 @@ function generateHTML() {
         }
         #toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
         @media (max-width: 1024px) {
-            /* Falls back to smaller layout gracefully on smaller screens */
             .card { flex: 1 1 250px; }
         }
         @media (max-width: 768px) {
@@ -250,6 +247,7 @@ function generateHTML() {
 </html>
     `;
     fs.writeFileSync(HTML_FILE, htmlTemplate.trim());
-    console.log('🌐 index.html generated with gorgeous macOS Style!');
+    console.log('🌐 index.html generated successfully!');
 }
+
 generateHTML();
