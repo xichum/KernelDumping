@@ -23,7 +23,10 @@ const UPSTREAMS = [
 const ARCHS = ['amd', 'arm'];
 
 const api = axios.create({
-    headers: TOKEN ? { Authorization: `token ${TOKEN}` } : {},
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Core-Sync/1.0',
+        ...(TOKEN ? { Authorization: `token ${TOKEN}` } : {})
+    },
     timeout: 30000
 });
 
@@ -33,32 +36,31 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
             return await api(url, options);
         } catch (e) {
             if (i === retries - 1) throw e;
+            console.log(`⏳ Retry ${i+1}/${retries} for ${url}`);
             await new Promise(r => setTimeout(r, 2000));
         }
     }
 }
 
 function findAsset(assets, arch) {
-    return assets.find(a => {
+    let validAssets = assets.filter(a => {
         const n = a.name.toLowerCase();
 
         if (
-            n.includes('windows') || n.includes('darwin') ||
-            n.includes('bsd') || n.includes('mips') ||
-            n.includes('deb') || n.includes('rpm') ||
-            n.includes('sha256') || n.includes('sig') ||
-            n.includes('txt') || n.includes('apk')
+            n.includes('windows') || n.includes('darwin') || n.includes('macos') ||
+            n.includes('bsd') || n.includes('mips') || n.includes('s390x') ||
+            n.includes('deb') || n.includes('rpm') || n.includes('apk') ||
+            n.includes('sha256') || n.includes('sig') || n.includes('txt') || n.includes('src')
         ) return false;
+
+        const badKeywords = ['cgo', 'glibc', '-v3', '-v2', 'alpine'];
+        if (badKeywords.some(kw => n.includes(kw))) return false;
 
         if (!n.includes('linux')) return false;
 
         if (arch === 'amd') {
-            return (
-                (n.includes('amd64') ||
-                 n.includes('x86_64') ||
-                 n.includes('-64')) &&
-                !n.includes('arm')
-            );
+            return (n.includes('amd64') || n.includes('x86_64') || n.includes('-64')) && 
+                   !n.includes('arm') && !n.includes('aarch64');
         }
 
         if (arch === 'arm') {
@@ -67,11 +69,17 @@ function findAsset(assets, arch) {
 
         return false;
     });
+
+    if (validAssets.length > 0) {
+        validAssets.sort((a, b) => a.name.length - b.name.length);
+        return validAssets[0];
+    }
+    
+    return null;
 }
 
 function findCoreBinary(dir, expectedBinName) {
     const files = fs.readdirSync(dir);
-
     for (const file of files) {
         const fullPath = path.join(dir, file);
         const stat = fs.statSync(fullPath);
@@ -81,7 +89,7 @@ function findCoreBinary(dir, expectedBinName) {
             if (res) return res;
         } else {
             const ext = path.extname(file).toLowerCase();
-            const badExts = ['.txt', '.md', '.json', '.yml', '.yaml', '.html', '.service', '.sh'];
+            const badExts = ['.txt', '.md', '.json', '.yml', '.yaml', '.html', '.service', '.sh', '.pem'];
 
             if (badExts.includes(ext)) continue;
             if (stat.size < 1024 * 1024) continue;
@@ -113,11 +121,11 @@ async function processProject(project, versionData) {
             const asset = findAsset(release.assets, arch);
 
             if (!asset) {
-                console.log(`⚠️ [${project.code}] no ${arch}`);
+                console.log(`⚠️  [${project.code}] no suitable compatible build for ${arch}`);
                 continue;
             }
 
-            console.log(`📦 [${project.code}_${arch}] ${asset.name}`);
+            console.log(`📦 [${project.code}_${arch}] matched: ${asset.name}`);
 
             const dlPath = path.join(TMP_DIR, asset.name);
             const extDir = path.join(TMP_DIR, `ext_${project.code}_${arch}`);
@@ -137,20 +145,21 @@ async function processProject(project, versionData) {
 
             let binarySource = dlPath;
 
-            if (asset.name.endsWith('.tar.gz')) {
+            const assetNameLower = asset.name.toLowerCase();
+            if (assetNameLower.endsWith('.tar.gz') || assetNameLower.endsWith('.tgz')) {
                 await tar.x({ file: dlPath, cwd: extDir });
                 binarySource = findCoreBinary(extDir, project.bin);
-            } else if (asset.name.endsWith('.zip')) {
+            } else if (assetNameLower.endsWith('.zip')) {
                 const zip = new AdmZip(dlPath);
                 zip.extractAllTo(extDir, true);
                 binarySource = findCoreBinary(extDir, project.bin);
-            } else if (asset.name.endsWith('.gz')) {
-                execSync(`gunzip -c ${dlPath} > ${path.join(extDir, project.bin)}`);
+            } else if (assetNameLower.endsWith('.gz') && !assetNameLower.endsWith('.tar.gz')) {
+                execSync(`gunzip -c "${dlPath}" > "${path.join(extDir, project.bin)}"`);
                 binarySource = path.join(extDir, project.bin);
             }
 
             if (!binarySource) {
-                console.error(`❌ missing binary`);
+                console.error(`❌ missing binary after extraction`);
                 continue;
             }
 
@@ -159,7 +168,7 @@ async function processProject(project, versionData) {
             fs.chmodSync(finalPath, 0o755);
 
             try {
-                execSync(`strip -s ${finalPath} || true`, { stdio: 'ignore' });
+                execSync(`strip -s "${finalPath}" || true`, { stdio: 'ignore' });
             } catch {}
 
             console.log(`✅ [${project.code}_${arch}] done`);
@@ -172,43 +181,44 @@ async function processProject(project, versionData) {
 
 async function downloadTuic(versionData) {
     const code = "T";
-
     console.log(`\n🔍 Fetching TUIC ...`);
 
     let version = 'v1.6.7';
-
     try {
-        const { data } = await fetchWithRetry(
-            'https://api.github.com/repos/Itsusinn/tuic/releases/latest'
-        );
+        const { data } = await fetchWithRetry('https://api.github.com/repos/Itsusinn/tuic/releases/latest');
         version = data.tag_name;
     } catch {}
 
-    versionData[code] = {
-        version,
-        updated: new Date().toISOString()
+    versionData[code] = { version, updated: new Date().toISOString() };
+
+    const tuicAssets = {
+        amd: `https://github.com/Itsusinn/tuic/releases/download/${version}/tuic-server-x86_64-linux`,
+        arm: `https://github.com/Itsusinn/tuic/releases/download/${version}/tuic-server-aarch64-linux`
     };
 
-    const binName = `T_amd64`;
-    const finalPath = path.join(FILES_DIR, binName);
+    for (const arch of ARCHS) {
+        const url = tuicAssets[arch];
+        const finalPath = path.join(FILES_DIR, `${code}_${arch}`); // 保持命名格式 T_amd / T_arm
 
-    const url = `https://github.com/Itsusinn/tuic/releases/download/${version}/tuic-server-x86_64-linux`;
+        console.log(`📦 [T_${arch}] downloading TUIC (${version})`);
 
-    console.log(`📦 [T] downloading TUIC`);
+        try {
+            const response = await fetchWithRetry(url, { responseType: 'stream' });
+            const writer = fs.createWriteStream(finalPath);
+            response.data.pipe(writer);
 
-    const response = await fetchWithRetry(url, { responseType: 'stream' });
-    const writer = fs.createWriteStream(finalPath);
+            await new Promise((res, rej) => {
+                writer.on('finish', res);
+                writer.on('error', rej);
+            });
 
-    response.data.pipe(writer);
-
-    await new Promise((res, rej) => {
-        writer.on('finish', res);
-        writer.on('error', rej);
-    });
-
-    fs.chmodSync(finalPath, 0o755);
-
-    console.log(`✅ [T] TUIC done`);
+            fs.chmodSync(finalPath, 0o755);
+            try { execSync(`strip -s "${finalPath}" || true`, { stdio: 'ignore' }); } catch {}
+            console.log(`✅ [T_${arch}] done`);
+        } catch (e) {
+            console.log(`⚠️ [T_${arch}] Failed to download TUIC: ${e.message}`);
+        }
+    }
 }
 
 async function main() {
@@ -224,7 +234,6 @@ async function main() {
     await downloadTuic(versionData);
 
     fs.writeJsonSync(DATA_FILE, versionData, { spaces: 2 });
-
     console.log(`\n💾 data.json ready`);
 
     fs.removeSync(TMP_DIR);
