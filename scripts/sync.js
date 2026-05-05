@@ -14,10 +14,10 @@ const UPSTREAMS = [
     {
         repo: "SagerNet/sing-box", code: "S", bin: "sing-box",
         matchers: {
-            amd: (n) => n.includes('linux-amd64-glibc.tar.gz'),
-            amdm: (n) => n.includes('linux-amd64-musl.tar.gz'),
-            arm: (n) => n.includes('linux-arm64-glibc.tar.gz'),
-            armm: (n) => n.includes('linux-arm64-musl.tar.gz')
+            amd: (n) => n.includes('linux-amd64-glibc'),
+            amdm: (n) => n.includes('linux-amd64-musl'),
+            arm: (n) => n.includes('linux-arm64-glibc'),
+            armm: (n) => n.includes('linux-arm64-musl')
         }
     },
     {
@@ -51,17 +51,17 @@ const UPSTREAMS = [
         }
     },
     {
-        repo: "nezhahq/agent", code: "N", bin: "nezha-agent",
+        repo: "nezhahq/agent", code: "N", bin: "nezha",
         matchers: {
-            amd: (n) => n.includes('linux_amd64.zip'),
-            arm: (n) => n.includes('linux_arm64.zip')
+            amd: (n) => n.includes('linux') && n.includes('amd64') && n.endsWith('.zip'),
+            arm: (n) => n.includes('linux') && n.includes('arm64') && n.endsWith('.zip')
         }
     },
     {
-        repo: "komari-monitor/komari-agent", code: "K", bin: "komari-agent",
+        repo: "komari-monitor/komari-agent", code: "K", bin: "komari",
         matchers: {
-            amd: (n) => n.includes('linux_amd64.tar.gz') && !n.includes('bsd'),
-            arm: (n) => n.includes('linux_arm64.tar.gz') && !n.includes('bsd')
+            amd: (n) => n.includes('linux') && n.includes('amd64') && !n.includes('bsd'),
+            arm: (n) => n.includes('linux') && n.includes('arm64') && !n.includes('bsd')
         }
     }
 ];
@@ -85,19 +85,31 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 }
 
 function findCoreBinary(dir, expectedBinName) {
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-        const fullPath = path.join(dir, file);
-        if (fs.statSync(fullPath).isDirectory()) {
-            const res = findCoreBinary(fullPath, expectedBinName);
-            if (res) return res;
-        } else {
-            const ext = path.extname(file).toLowerCase();
-            if (['.txt', '.md', '.json', '.yml', '.yaml', '.service'].includes(ext)) continue;
-            if (file.toLowerCase().includes(expectedBinName.toLowerCase()) || ext === '') return fullPath;
+    let largestFile = null;
+    let maxSize = 0;
+
+    const scan = (d) => {
+        for (const file of fs.readdirSync(d)) {
+            const fullPath = path.join(d, file);
+            const stat = fs.statSync(fullPath);
+            if (stat.isDirectory()) {
+                scan(fullPath);
+            } else {
+                const ext = path.extname(file).toLowerCase();
+                if (['.txt', '.md', '.json', '.yml', '.yaml', '.service', '.sh'].includes(ext)) continue;
+                if (file.toLowerCase().includes(expectedBinName.toLowerCase())) {
+                    largestFile = fullPath;
+                    return;
+                }
+                if (ext === '' && stat.size > maxSize) {
+                    maxSize = stat.size;
+                    largestFile = fullPath;
+                }
+            }
         }
-    }
-    return null;
+    };
+    scan(dir);
+    return largestFile;
 }
 
 async function processProject(project, versionData) {
@@ -148,11 +160,7 @@ async function processProject(project, versionData) {
         }
 
         if (downloadedArchs.length > 0) {
-            versionData[project.code] = {
-                version,
-                updated: new Date().toISOString(),
-                archs: downloadedArchs
-            };
+            versionData[project.code] = { version, updated: new Date().toISOString(), archs: downloadedArchs };
         }
     } catch (e) {}
 }
