@@ -1,30 +1,54 @@
 {
   "S": {
     "version": "v1.13.11",
-    "updated": "2026-05-04T23:29:24.463Z"
+    "updated": "2026-05-05T11:47:07.940Z",
+    "archs": [
+      "amd",
+      "amdm",
+      "arm",
+      "armm"
+    ]
   },
   "X": {
     "version": "v26.3.27",
-    "updated": "2026-05-04T23:29:27.428Z"
+    "updated": "2026-05-05T11:47:10.805Z",
+    "archs": [
+      "amd",
+      "arm"
+    ]
   },
   "C": {
     "version": "2026.3.0",
-    "updated": "2026-05-04T23:29:29.395Z"
-  },
-  "K": {
-    "version": "1.1.93",
-    "updated": "2026-05-04T23:29:30.825Z"
-  },
-  "N": {
-    "version": "v2.0.3",
-    "updated": "2026-05-04T23:29:31.846Z"
+    "updated": "2026-05-05T11:47:13.252Z",
+    "archs": [
+      "amd",
+      "arm"
+    ]
   },
   "H": {
-    "version": "app/v2.8.2",
-    "updated": "2026-05-04T23:29:33.045Z"
+    "version": "v2.8.2",
+    "updated": "2026-05-05T11:47:15.598Z",
+    "archs": [
+      "amd",
+      "arm"
+    ]
   },
   "T": {
     "version": "v1.8.1",
-    "updated": "2026-05-04T23:29:33.693Z"
+    "updated": "2026-05-05T11:47:18.513Z",
+    "archs": [
+      "amd",
+      "amdm",
+      "arm",
+      "armm"
+    ]
+  },
+  "N": {
+    "version": "v2.0.3",
+    "updated": "2026-05-05T11:47:20.035Z",
+    "archs": [
+      "amd",
+      "arm"
+    ]
   }
 }

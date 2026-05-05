@@ -12,8 +12,6 @@
             --glass-highlight: rgba(255, 255, 255, 0.05);
             --text-main: rgba(255, 255, 255, 0.95);
             --text-sub: rgba(235, 235, 245, 0.6);
-            --amd-color: #5e5ce6;
-            --arm-color: #ff375f;
             --bg-api: url('https://t.alcy.cc/ycy');
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,101 +19,53 @@
             background: #0f0f13 var(--bg-api) center/cover fixed no-repeat;
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 2rem 1.5rem;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 2rem 1.5rem;
             -webkit-font-smoothing: antialiased;
         }
         .overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.25);
-            z-index: -1;
+            background: rgba(0, 0, 0, 0.25); z-index: -1;
         }
-        .container {
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center; margin-bottom: 2.5rem;
-            font-size: 2rem; font-weight: 600; letter-spacing: 1px;
-            color: var(--text-main);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-        .grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-        }
+        .container { max-width: 1400px; width: 100%; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 2.5rem; font-size: 2rem; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
         .card {
-            flex: 1 1 300px;
-            max-width: 320px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border-radius: 20px;
-            padding: 1.25rem;
-            border: 1px solid var(--glass-border);
+            flex: 1 1 300px; max-width: 320px;
+            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-radius: 20px; padding: 1.25rem; border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
         }
-        .card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-            background: rgba(35, 35, 45, 0.55);
-        }
-        .card-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1rem;
-        }
+        .card:hover { transform: translateY(-5px) scale(1.02); background: rgba(35, 35, 45, 0.55); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .title-group { display: flex; align-items: center; gap: 10px; }
         .icon-box {
-            display: flex; align-items: center; justify-content: center;
-            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px;
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05);
         }
         .icon-box svg { width: 18px; height: 18px; color: #fff; }
-        .card h2 { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
-        .status-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: #32d74b;
-            box-shadow: 0 0 8px #32d74b;
-        }
-        .info {
-            background: var(--glass-highlight);
-            border-radius: 12px; padding: 0.8rem; margin-bottom: 1.2rem;
-        }
-        .info p {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.5rem;
-        }
+        .card h2 { font-size: 1.1rem; font-weight: 600; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #32d74b; box-shadow: 0 0 8px #32d74b; }
+        .info { background: var(--glass-highlight); border-radius: 12px; padding: 0.8rem; margin-bottom: 1.2rem; }
+        .info p { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.5rem; }
         .info p:last-child { margin-bottom: 0; }
         .info svg { width: 14px; height: 14px; opacity: 0.8; }
-        .info code {
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-            color: #fff; opacity: 0.9;
-        }
+        .info code { font-family: ui-monospace, monospace; color: #fff; opacity: 0.9; }
         .actions { display: flex; flex-direction: column; gap: 0.8rem; }
         .action-row {
             display: flex; align-items: center; gap: 8px;
-            background: rgba(0,0,0,0.2); padding: 6px; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2); padding: 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
         }
         .arch-label {
-            font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 8px;
-            letter-spacing: 0.5px; width: 65px; text-align: center;
+            font-size: 0.7rem; font-weight: 700; padding: 4px 6px; border-radius: 8px;
+            width: 85px; text-align: center; white-space: nowrap;
         }
         .arch-label.amd { background: rgba(94, 92, 230, 0.2); color: #8280ff; }
         .arch-label.arm { background: rgba(255, 55, 95, 0.2); color: #ff6b8b; }
         .btn {
             display: flex; align-items: center; justify-content: center; gap: 6px;
-            border: none; border-radius: 8px; cursor: pointer;
-            text-decoration: none; color: #fff; font-size: 0.85rem; font-weight: 500;
-            background: rgba(255,255,255,0.1);
-            transition: all 0.2s; height: 30px;
+            border: none; border-radius: 8px; cursor: pointer; text-decoration: none; color: #fff;
+            font-size: 0.85rem; font-weight: 500; background: rgba(255,255,255,0.1); transition: all 0.2s; height: 30px;
         }
         .btn:hover { background: rgba(255,255,255,0.2); }
         .btn:active { transform: scale(0.95); }
@@ -125,18 +75,13 @@
         .copy-btn.success { background: #32d74b; color: #000; }
         #toast {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px);
-            background: rgba(30, 30, 30, 0.75); backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #fff; padding: 10px 24px; border-radius: 30px;
+            background: rgba(30, 30, 30, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px 24px; border-radius: 30px;
             font-size: 0.9rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 9999; display: flex; align-items: center; gap: 8px;
+            opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 9999; display: flex; align-items: center; gap: 8px;
         }
         #toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-        @media (max-width: 1024px) {
-            .card { flex: 1 1 250px; }
-        }
+        @media (max-width: 1024px) { .card { flex: 1 1 250px; } }
         @media (max-width: 768px) {
             .card { max-width: 100%; flex: 1 1 100%; }
             body { padding: 2rem 1rem; height: auto; display: block; }
@@ -160,21 +105,34 @@
                 </div>
                 <div class="info">
                     <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>v1.13.11</code></p>
-                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 07:29:24</code></p>
+                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 19:47:07</code></p>
                 </div>
                 <div class="actions">
                     
-            <div class="action-row">
-                <span class="arch-label amd">AMD64</span>
-                <a href="./files/S_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'S_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-            <div class="action-row">
-                <span class="arch-label arm">ARM64</span>
-                <a href="./files/S_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'S_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-        
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64</span>
+                    <a href="./files/S_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'S_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64 Musl</span>
+                    <a href="./files/S_amdm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'S_amdm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64</span>
+                    <a href="./files/S_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'S_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64 Musl</span>
+                    <a href="./files/S_armm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'S_armm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
                 </div>
             </div>
         
@@ -188,21 +146,22 @@
                 </div>
                 <div class="info">
                     <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>v26.3.27</code></p>
-                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 07:29:27</code></p>
+                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 19:47:10</code></p>
                 </div>
                 <div class="actions">
                     
-            <div class="action-row">
-                <span class="arch-label amd">AMD64</span>
-                <a href="./files/X_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'X_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-            <div class="action-row">
-                <span class="arch-label arm">ARM64</span>
-                <a href="./files/X_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'X_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-        
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64</span>
+                    <a href="./files/X_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'X_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64</span>
+                    <a href="./files/X_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'X_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
                 </div>
             </div>
         
@@ -216,77 +175,22 @@
                 </div>
                 <div class="info">
                     <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>2026.3.0</code></p>
-                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 07:29:29</code></p>
+                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 19:47:13</code></p>
                 </div>
                 <div class="actions">
                     
-            <div class="action-row">
-                <span class="arch-label amd">AMD64</span>
-                <a href="./files/C_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'C_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-            <div class="action-row">
-                <span class="arch-label arm">ARM64</span>
-                <a href="./files/C_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'C_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-        
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64</span>
+                    <a href="./files/C_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'C_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
                 </div>
-            </div>
-        
-            <div class="card">
-                <div class="card-header">
-                    <div class="title-group">
-                        <span class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg></span>
-                        <h2>K-DS</h2>
-                    </div>
-                    <span class="status-dot"></span>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64</span>
+                    <a href="./files/C_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'C_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
                 </div>
-                <div class="info">
-                    <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>1.1.93</code></p>
-                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 07:29:30</code></p>
-                </div>
-                <div class="actions">
-                    
-            <div class="action-row">
-                <span class="arch-label amd">AMD64</span>
-                <a href="./files/K_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'K_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-            <div class="action-row">
-                <span class="arch-label arm">ARM64</span>
-                <a href="./files/K_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'K_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-        
-                </div>
-            </div>
-        
-            <div class="card">
-                <div class="card-header">
-                    <div class="title-group">
-                        <span class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg></span>
-                        <h2>N-OV</h2>
-                    </div>
-                    <span class="status-dot"></span>
-                </div>
-                <div class="info">
-                    <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>v2.0.3</code></p>
-                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 07:29:31</code></p>
-                </div>
-                <div class="actions">
-                    
-            <div class="action-row">
-                <span class="arch-label amd">AMD64</span>
-                <a href="./files/N_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'N_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-            <div class="action-row">
-                <span class="arch-label arm">ARM64</span>
-                <a href="./files/N_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'N_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-        
+            
                 </div>
             </div>
         
@@ -299,22 +203,23 @@
                     <span class="status-dot"></span>
                 </div>
                 <div class="info">
-                    <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>app/v2.8.2</code></p>
-                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 07:29:33</code></p>
+                    <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>v2.8.2</code></p>
+                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 19:47:15</code></p>
                 </div>
                 <div class="actions">
                     
-            <div class="action-row">
-                <span class="arch-label amd">AMD64</span>
-                <a href="./files/H_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'H_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-            <div class="action-row">
-                <span class="arch-label arm">ARM64</span>
-                <a href="./files/H_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'H_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-        
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64</span>
+                    <a href="./files/H_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'H_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64</span>
+                    <a href="./files/H_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'H_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
                 </div>
             </div>
         
@@ -328,21 +233,63 @@
                 </div>
                 <div class="info">
                     <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>v1.8.1</code></p>
-                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 07:29:33</code></p>
+                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 19:47:18</code></p>
                 </div>
                 <div class="actions">
                     
-            <div class="action-row">
-                <span class="arch-label amd">AMD64</span>
-                <a href="./files/T_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'T_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-            </div>
-            <div class="action-row">
-                <span class="arch-label arm">ARM64</span>
-                <a href="./files/T_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
-                <button class="btn copy-btn" onclick="copyLink(this, 'T_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64</span>
+                    <a href="./files/T_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'T_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64 Musl</span>
+                    <a href="./files/T_amdm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'T_amdm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64</span>
+                    <a href="./files/T_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'T_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64 Musl</span>
+                    <a href="./files/T_armm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'T_armm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                </div>
             </div>
         
+            <div class="card">
+                <div class="card-header">
+                    <div class="title-group">
+                        <span class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg></span>
+                        <h2>N-OV</h2>
+                    </div>
+                    <span class="status-dot"></span>
+                </div>
+                <div class="info">
+                    <p class="tag"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg> <code>v2.0.3</code></p>
+                    <p class="time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <code>5/5/2026, 19:47:20</code></p>
+                </div>
+                <div class="actions">
+                    
+                <div class="action-row">
+                    <span class="arch-label amd">AMD64</span>
+                    <a href="./files/N_amd" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'N_amd')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
+                <div class="action-row">
+                    <span class="arch-label arm">ARM64</span>
+                    <a href="./files/N_arm" class="btn dl-btn" download><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>
+                    <button class="btn copy-btn" onclick="copyLink(this, 'N_arm')" title="Copy Link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                </div>
+            
                 </div>
             </div>
         
