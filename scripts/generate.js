@@ -15,13 +15,6 @@ const ICONS = {
     copy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
 };
 
-const ARCH_CONFIG = {
-    'amd': { label: 'AMD64', class: 'amd' },
-    'arm': { label: 'ARM64', class: 'arm' },
-    'amdm': { label: 'AMD64 Musl', class: 'amd' },
-    'armm': { label: 'ARM64 Musl', class: 'arm' }
-};
-
 const NEW_FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3E%3C/path%3E%3Cpolyline points='22,4 12,14.01 9,11.01'%3E%3C/polyline%3E%3C/svg%3E"; 
 
 function generateHTML() {
@@ -32,22 +25,39 @@ function generateHTML() {
     for (const [code, info] of Object.entries(data)) {
         const dateStr = new Date(info.updated).toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false });
         const fakeName = FAKE_NAMES[code] || `sys-proc-${code}`;
-        const archs = info.archs || ['amd', 'arm'];
+        const archs = info.archs || [];
         
         let actionsHTML = '';
-        archs.forEach(archKey => {
-            if (!ARCH_CONFIG[archKey]) return;
-            const cfg = ARCH_CONFIG[archKey];
-            const fileName = `${code}_${archKey}`;
+        const baseArchs = ['amd', 'arm'];
+        
+        for (const base of baseArchs) {
+            const hasStandard = archs.includes(base);
+            const hasMusl = archs.includes(base + 'm');
             
-            actionsHTML += `
-                <div class="action-row">
-                    <span class="arch-label ${cfg.class}">${cfg.label}</span>
-                    <a href="./files/${fileName}" class="btn dl-btn" download>${ICONS.download} Download</a>
-                    <button class="btn copy-btn" onclick="copyLink(this, '${fileName}')" title="Copy Link">${ICONS.copy}</button>
-                </div>
-            `;
-        });
+            if (!hasStandard && !hasMusl) continue;
+            
+            const archLabelName = base === 'amd' ? 'AMD64' : 'ARM64';
+
+            if (hasStandard && hasMusl) {
+                actionsHTML += `
+                    <div class="action-row">
+                        <span class="arch-label ${base}">${archLabelName}</span>
+                        <a href="./files/${code}_${base}" class="btn dl-btn mini" download>GLIBC</a>
+                        <button class="btn copy-btn mini" onclick="copyLink(this, '${code}_${base}')" title="Copy">${ICONS.copy}</button>
+                        <a href="./files/${code}_${base}m" class="btn dl-btn mini" download>MUSL</a>
+                        <button class="btn copy-btn mini" onclick="copyLink(this, '${code}_${base}m')" title="Copy">${ICONS.copy}</button>
+                    </div>
+                `;
+            } else if (hasStandard) {
+                actionsHTML += `
+                    <div class="action-row">
+                        <span class="arch-label ${base}">${archLabelName}</span>
+                        <a href="./files/${code}_${base}" class="btn dl-btn" download>${ICONS.download} Download</a>
+                        <button class="btn copy-btn" onclick="copyLink(this, '${code}_${base}')" title="Copy Link">${ICONS.copy}</button>
+                    </div>
+                `;
+            }
+        }
         
         cardsHTML += `
             <div class="card">
@@ -106,7 +116,7 @@ function generateHTML() {
             background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-radius: 20px; padding: 1.25rem; border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
         .card:hover { transform: translateY(-5px) scale(1.02); background: rgba(35, 35, 45, 0.55); }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -125,17 +135,17 @@ function generateHTML() {
         .info code { font-family: ui-monospace, monospace; color: #fff; opacity: 0.9; }
         .actions { display: flex; flex-direction: column; gap: 0.8rem; }
         .action-row {
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; gap: 6px;
             background: rgba(0,0,0,0.2); padding: 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
         }
         .arch-label {
             font-size: 0.7rem; font-weight: 700; padding: 4px 6px; border-radius: 8px;
-            width: 85px; text-align: center; white-space: nowrap;
+            width: 60px; text-align: center; white-space: nowrap;
         }
         .arch-label.amd { background: rgba(94, 92, 230, 0.2); color: #8280ff; }
         .arch-label.arm { background: rgba(255, 55, 95, 0.2); color: #ff6b8b; }
         .btn {
-            display: flex; align-items: center; justify-content: center; gap: 6px;
+            display: flex; align-items: center; justify-content: center; gap: 4px;
             border: none; border-radius: 8px; cursor: pointer; text-decoration: none; color: #fff;
             font-size: 0.85rem; font-weight: 500; background: rgba(255,255,255,0.1); transition: all 0.2s; height: 30px;
         }
@@ -143,7 +153,11 @@ function generateHTML() {
         .btn:active { transform: scale(0.95); }
         .btn svg { width: 15px; height: 15px; }
         .dl-btn { flex: 1; }
-        .copy-btn { width: 38px; }
+        .copy-btn { width: 36px; }
+        
+        .btn.mini { font-size: 0.7rem; padding: 0 4px; font-weight: 700; }
+        .copy-btn.mini { width: 30px; }
+
         .copy-btn.success { background: #32d74b; color: #000; }
         #toast {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px);
@@ -162,7 +176,7 @@ function generateHTML() {
 </head>
 <body>
     <div class="overlay"></div>
-    <div id="toast"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#32d74b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Link copied to clipboard!</span></div>
+    <div id="toast"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#32d74b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Link copied!</span></div>
     <div class="container">
         <h1>System Monitor</h1>
         <div class="grid">
@@ -188,7 +202,7 @@ function generateHTML() {
                     btnElement.innerHTML = originalHTML;
                 }, 2000);
             }).catch(err => {
-                alert('Failed to copy. Please manually right-click the Download button to copy the link.');
+                alert('Copy failed.');
             });
         }
     </script>
